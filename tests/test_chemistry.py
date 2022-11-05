@@ -183,6 +183,17 @@ class TestSequencingChemistry(TestMixin, TestCase):
             'cdna': ('ABCEDEFGHIJKLMNOPQRSTUVWXYZ', 'IJKLMNOPQRSTUVWXYZ')
         },
                          chemistry.get_chemistry('STORM-seq').parse([seq1, seq2]))
+    
+    def test_vasaseq(self):
+        seq1 = 'abcdefghijklmn'
+        seq2 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        self.assertEqual({
+            'cell_barcode': ('ghijklmn',),
+            'umi': ('abcdef',),
+            'cdna': ('ABCDEFGHIJKLMNOPQRSTUVWXYZ',)
+        },
+                        chemistry.get_chemistry('VASA-seq').parse([seq1, seq2]))
+
     def test_to_kallisto_bus_arguments(self):
         chem = chemistry.get_chemistry('10xv3')
         self.assertEqual({'-x': '0,0,16:0,16,28:1,0,0'},

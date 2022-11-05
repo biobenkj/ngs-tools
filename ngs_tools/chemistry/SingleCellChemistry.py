@@ -294,6 +294,19 @@ _STORMSEQ = SingleCellChemistry(
     ),
     umi_parser=SubSequenceParser(SubSequenceDefinition(1, 0, 8)),
 )
+
+_VASASEQ = SingleCellChemistry(
+    name='VASA-seq',
+    description=(
+        'Plate- and droplet-based, ribo-reduced single-cell total RNA-seq chemistry based on SORT-seq by Salmen et al. 2022'
+    ),
+    n=2,
+    strand=SequencingStrand.FORWARD,
+    cdna_parser=SubSequenceParser(SubSequenceDefinition(1)),
+    cell_barcode_parser=SubSequenceParser(SubSequenceDefinition(0, 6, 8)),
+    umi_parser=SubSequenceParser(SubSequenceDefinition(0, 0, 6)),
+)
+
 _SCI_FATE = SingleCellChemistry(
     name='Sci-fate',
     description=(
@@ -333,7 +346,7 @@ _SPLITSEQ = SingleCellChemistry(
     ),
     umi_parser=SubSequenceParser(SubSequenceDefinition(1, 0, 10)),
 )
-_PLATE_SINGLE_CELL_CHEMISTRIES = [_SMARTSEQ_V2, _SMARTSEQ_V3, _BDWTA, _STORMSEQ]
+_PLATE_SINGLE_CELL_CHEMISTRIES = [_SMARTSEQ_V2, _SMARTSEQ_V3, _BDWTA, _STORMSEQ, _VASASEQ]
 _DROPLET_SINGLE_CELL_CHEMISTRIES = [
     _DROPSEQ, _10X_V1, _10X_V2, _10X_V3, _10X_V3_ULTIMA, _10X_FB, _10X_ATAC,
     _INDROPS_V1, _INDROPS_V2, _INDROPS_V3, _SURECELL, _SCI_FATE
