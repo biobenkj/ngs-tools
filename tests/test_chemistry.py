@@ -182,7 +182,9 @@ class TestSequencingChemistry(TestMixin, TestCase):
             'umi': ('abcdefgh',),
             'cdna': ('ABCEDEFGHIJKLMNOPQRSTUVWXYZ', 'IJKLMNOPQRSTUVWXYZ')
         },
-                         chemistry.get_chemistry('STORM-seq').parse([seq1, seq2]))
+                         chemistry.get_chemistry('STORM-seq').parse([
+                             seq1, seq2
+                         ]))
     
     def test_vasaseq(self):
         seq1 = 'abcdefghijklmn'
@@ -250,6 +252,19 @@ class TestSequencingChemistry(TestMixin, TestCase):
                              seq1, seq2
                          ]))
 
+    def test_get_chemistry_raises_error_on_multiple(self):
+        with self.assertRaises(chemistry.ChemistryError):
+            chemistry.get_chemistry('10x')
+
+    def test_lengths(self):
+        self.assertEqual((28, None), chemistry.get_chemistry('10xv3').lengths)
+        self.assertEqual((26, None), chemistry.get_chemistry('10xv2').lengths)
+        self.assertEqual((8, 14, None),
+                         chemistry.get_chemistry('indropsv3').lengths)
+
+
+class TestChemistry(TestMixin, TestCase):
+
     def test_get_chemistry(self):
         self.assertEqual(
             chemistry.get_chemistry('10xv3'), chemistry.get_chemistry('10x-v3')
@@ -258,8 +273,7 @@ class TestSequencingChemistry(TestMixin, TestCase):
             chemistry.get_chemistry('10xv3'), chemistry.get_chemistry('10XV3')
         )
 
-    def test_lengths(self):
-        self.assertEqual((28, None), chemistry.get_chemistry('10xv3').lengths)
-        self.assertEqual((26, None), chemistry.get_chemistry('10xv2').lengths)
-        self.assertEqual((8, 14, None),
-                         chemistry.get_chemistry('indropsv3').lengths)
+        # Make sure v1 doesn't match with ones without a version
+        self.assertEqual(
+            chemistry.get_chemistry('10xv1'), chemistry.get_chemistry('10x-v1')
+        )

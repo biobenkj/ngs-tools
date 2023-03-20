@@ -1,4 +1,5 @@
 import re
+from typing import Optional, Tuple
 
 from .Chemistry import (
     Chemistry,
@@ -31,17 +32,17 @@ VERSION_PARSER = re.compile(r'v?\d+$')
 CHEMISTRIES = SINGLE_CELL_CHEMISTRIES + SPATIAL_CHEMISTRIES + MULTIMODAL_CHEMISTRIES
 
 
-def _clean_name(name: str):
+def _clean_name(name: str) -> Tuple[str, Optional[int]]:
     """Internal helper function to clean chemistry names.
 
     Args:
         name: String name of the chemistry.
 
     Returns:
-        Cleaned name
+        Tuple of the cleaned name and version
     """
     name = name.lower().replace('-', '').replace(' ', '')
-    version = 1
+    version = None
     base_name = name
 
     version_search = VERSION_PARSER.search(name)
@@ -53,11 +54,10 @@ def _clean_name(name: str):
 
         base_name = name[:version_search.start(0)]
 
-    # Cleaned name is of the form {base_name}-{version}.
-    return f'{base_name}-{version}'
+    return base_name, version
 
 
-def get_chemistry(name: str):
+def get_chemistry(name: str) -> Chemistry:
     """Fetch a :class:`Chemistry` definition by name. Uses some regex magic to
     correctly deal with chemistry versioning at the end of the name. For instance,
     ``10x2`` is interpreted the same as ``10xv2``.
@@ -75,10 +75,19 @@ def get_chemistry(name: str):
     Raises:
         ChemistryError: If the chemistry could not be found.
     """
-    cleaned_name = _clean_name(name)
-
+    cleaned_name, cleaned_version = _clean_name(name)
+    matching = []
     for chemistry in CHEMISTRIES:
-        if cleaned_name == _clean_name(chemistry.name):
-            return chemistry
+        base_name, version = _clean_name(chemistry.name)
+        if cleaned_name in base_name and cleaned_version == version:
+            matching.append(chemistry)
 
-    raise ChemistryError(f'Chemistry `{name}` not found')
+    if len(matching) == 1:
+        return matching[0]
+
+    if not matching:
+        raise ChemistryError(f'Chemistry `{name}` not found')
+    else:
+        raise ChemistryError(
+            f'Multiple matching chemistries found: {[match.name for match in matching]}'
+        )
