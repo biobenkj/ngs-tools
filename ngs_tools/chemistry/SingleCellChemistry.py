@@ -310,8 +310,7 @@ _STORMSEQ = SingleCellChemistry(
 _VASASEQ = SingleCellChemistry(
     name='VASA-seq',
     description=(
-        'Plate- and droplet-based, ribo-reduced single-cell total RNA-seq chemistry based on SORT-seq by Salmen et 
-al. 2022'
+        'Plate- and droplet-based, ribo-reduced single-cell total RNA-seq chemistry based on SORT-seq by Salmen et al. 2022'
     ),
     n=2,
     strand=SequencingStrand.FORWARD,
