@@ -307,18 +307,18 @@ _STORMSEQ = SingleCellChemistry(
     umi_parser=SubSequenceParser(SubSequenceDefinition(1, 0, 8)),
 )
 
-#_VASASEQ = SingleCellChemistry(
-#    name='VASA-seq',
-#    description=(
-#        'Plate- and droplet-based, ribo-reduced single-cell total RNA-seq chemistry based on SORT-seq by Salmen et 
-#al. 2022'
-#    ),
-#    n=2,
-#    strand=SequencingStrand.FORWARD,
-#    cdna_parser=SubSequenceParser(SubSequenceDefinition(1)),
-#    cell_barcode_parser=SubSequenceParser(SubSequenceDefinition(0, 6, 8)),
-#    umi_parser=SubSequenceParser(SubSequenceDefinition(0, 0, 6)),
-#)
+_VASASEQ = SingleCellChemistry(
+    name='VASA-seq',
+    description=(
+        'Plate- and droplet-based, ribo-reduced single-cell total RNA-seq chemistry based on SORT-seq by Salmen et 
+al. 2022'
+    ),
+    n=2,
+    strand=SequencingStrand.FORWARD,
+    cdna_parser=SubSequenceParser(SubSequenceDefinition(1)),
+    cell_barcode_parser=SubSequenceParser(SubSequenceDefinition(0, 6, 8)),
+    umi_parser=SubSequenceParser(SubSequenceDefinition(0, 0, 6)),
+)
 
 _SCI_FATE = SingleCellChemistry(
     name='Sci-fate',
