@@ -187,14 +187,13 @@ class TestSequencingChemistry(TestMixin, TestCase):
                          ]))
     
     def test_vasaseq(self):
-        seq1 = 'abcdefghijklmn'
-        seq2 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        seq1 = 'abcdefghijklmnABCDEFGHIJKLMNOPQRSTUVWXYZ'
         self.assertEqual({
             'cell_barcode': ('ghijklmn',),
             'umi': ('abcdef',),
             'cdna': ('ABCDEFGHIJKLMNOPQRSTUVWXYZ',)
         },
-                        chemistry.get_chemistry('VASA-seq').parse([seq1, seq2]))
+                        chemistry.get_chemistry('VASA-seq').parse([seq1]))
 
     def test_to_kallisto_bus_arguments(self):
         chem = chemistry.get_chemistry('10xv3')
